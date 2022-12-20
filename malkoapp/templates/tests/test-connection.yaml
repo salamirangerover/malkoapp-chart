@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "malkoapp.fullname" . }}-test-connection"
+  labels:
+    {{- include "malkoapp.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "malkoapp.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
